@@ -1,7 +1,5 @@
 # Introduction
 
---- 
-
 ## Neighbor-joining: Building Unrooted Phylogenetic Trees
 
 Neighbor-joining (NJ) is a greedy agglomerative clustering algorithm used to construct unrooted phylogenetic trees from a distance matrix derived from the results of an alignment score matrix. It is used to compute genetic differences between species or variants and analyze where they may have diverged at the molecular level. Unlike UPGMA (Unweighted Pair Group Method with Arithmetic Mean), neighbor-joining:
@@ -16,6 +14,7 @@ Each of these represents a unique characteristic of the neighbor-joining method.
 # Algorithm
 
 Within this project, the Neighbor-joining algorithm is followed by the local alignment algorithm, Smith-Waterman. The NJ algorithm steps root from the guide provided in the Jupyter Notebook as we constructed our function around this: 
+
 
 **Initialization**:
 - Let $n$ be the number of sequences
@@ -132,6 +131,8 @@ copy distance matrix, nodes = copy of labels, n = number of nodes
 
 ## Biological Considerations and Context
 
+### Expansions of Neighbor-joining
+
 To expand on neighbor-joining, several variants have been developed since the original algorithm:
 
 1. Live neighbor-joining
@@ -139,6 +140,8 @@ To expand on neighbor-joining, several variants have been developed since the or
 3. Multifurcating neighbor-joining
 
 Each variant builds upon the original algorithm and introduces additional parameters to accommodate different types of data.
+
+### Conversion of Sequences into Genetic Distances
 
 One area where our group experienced the most confusion was the conversion of sequences into genetic distances. Based on the provided HTML, the process begins by calculating a p-distance. However, p-distance can underestimate evolutionary change as sequence divergence increases. Therefore, an important consideration is choosing between the Jukes-Cantor and Kimura 2-parameter models.
 
@@ -149,18 +152,19 @@ One area where our group experienced the most confusion was the conversion of se
     * Assumption: All four nucleotides occur with equal frequencies, but transitions occur more frequently than transversions. The model uses two substitution parameters: one for transitions and one for transversions.
 
 
-Both models were challenging for us to fully understand. With additional time, we would be better able to determine how each model operates and which would be most appropriate for this dataset.
+Both models were challenging for us to fully understand. With additional time, we would be better able to determine how each model operates and which would be most appropriate for this dataset. As a note, we opted for a normalization method where we computed 1 - Smith-Waterman similarity. 
 
+### The Data itself 
 
 The dataset consists of HIV sequences. An important biological consideration is the complexity of viral evolution. High mutation rates and recombination events can lead to inaccurate branching patterns and should be considered when constructing a phylogenetic tree.
 
-### Strengths
+## Strengths
 
 - Computationally efficient
 - Low computational cost, O(N³)
 - Well suited for smaller datasets, such as the viral dataset used in this project
 
-### Limitations
+## Limitations
 
 A few limitations of neighbor-joining include:
 
@@ -168,7 +172,7 @@ A few limitations of neighbor-joining include:
 - Results can be difficult to reproduce depending on model parameters and implementation details
 - Like other clustering methods, accuracy is highly dependent on the quality of the distance matrix
 
-### Tools to Compare
+## Tools to Compare
 
 We unfortunately did not have the time to generate comparison between a known Bioinformatics tool due to time constraints. This is the tool we would have hoped to utilize that could provide a comparison of our results:
 
@@ -192,13 +196,16 @@ This one is interesting because it uses R rather than Python to emulate the neig
 
 * *Algorithm Comprehension*- Understanding the algorithm proved challenging due to the number of steps and formulas involved. The HTML resource was helpful for organizing the workflow and providing a simple example. The most time-consuming aspect was developing a thorough understanding of the concepts before implementing the code.
 
-* *Building the Distance Matrix from Alignment Scores*- This stage was both successful and challenging. We encountered conflicting information when determining how to compute distances and construct the matrix. Given more time, we would like to revisit this topic to better evaluate the criteria for selecting one model over the other.
+* *Building the Distance Matrix from Alignment Scores*- This stage was both successful and challenging. We encountered conflicting information when determining how to compute distances and construct the matrix. Both Jukes-Cantor and K2P have distinct strengths and limitations, yet we opted for a 1 - Smith-Waterman normalization approach. Given more time, we would like to revisit this topic to better evaluate the criteria for selecting one model over the other.
 
 # Personal Reflections
 ## Group Leader- Kailey 
 
-- mention NP-complete projects as this one and the previous one were so.
-- mention using R vs Python
+This project was not an easy one to fathom. The algorithm was truly a difficult one to comprehend with the various formulas and steps. It's different learning about phylogenetic trees from biology and noting that the different branches are different lengths to represent divergence in evolutionary relationships. This project said "how do we build those phylogenetic trees." This was never a consideration I had until this course. 
+
+Completing the HTML provided to be an extraordinary resource as it provided a walk through of the entirety of the algorithm. I was able to do the example provided by hand to gain a better understanding of the material. Reading scientific papers and additional resources also honed down on how these algorithms are used. What was interesting is that a lot more papers mentioned UPGMA rather than neighbor-joining so I would like to continue my search into why that is the preference. 
+
+We were able to meet a couple times throughout this process, and for our initial meeting we had spent the majority of the time processing the material. The second meeting we had code about halfway finished, but the discussion persisted about confusion we had about the concept and formulas. Peer collaboration was a useful asset here. I would also like to thank my group for also being accommodating of the West Coast schedule because there were a few times where we would meet and talk late at night! 
 
 ## Dianah
 This project was a bit challenging, and it took us a while to figure out. After our first virtual meeting, we each went back to review the slides, notebook and walkthrough, but even at our second meeting we were still struggling to see how the pieces fit together.It taught me that understanding an algorithm and implementing it are two different skills. The team discussions helped a lot. I was able to follow neighbor joining on paper well but writing it correctly was confusing. Python also accepted some small bugs without complaint which quietly produced wrong answers. The notebook, the walkthrough and the data file each had small inconsistencies, and checking them against each other made me more confident in my own results.
@@ -221,6 +228,7 @@ Input: How is the Smith-Waterman algorithm connect to the NJ algorithm? How to a
 
 Justification: I used Claude to provide assistant in detailing how the concepts are integrated together. It provided me resources to look at how to compute the Distance Matrix and develop pseudocode for it. 
 
+--- 
 Dianah
 I used Claude to learn the use of np.delete, np.vstack and np.column_stack to remove the joined rows and columns and add the new node’s row and column. I also used it to understand the concepts of the project.
 
