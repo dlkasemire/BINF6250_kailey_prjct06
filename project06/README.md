@@ -56,7 +56,77 @@ When $n = 2$ with remaining nodes $i$ and $j$:
 Put pseudocode in this box:
 
 ```
-Some pseudocode here
+def read_fasta(filename: str) -> Dict[str, str]:
+initialize empty dict seqs, current_id = None
+        open file, for each line:
+            strip whitespace, skip if empty
+            if line starts with ">":
+                current_id = last token of header - after ">"
+                seqs[current_id] = ""
+            else if current_id exists:
+                append line to seqs[current_id]  (handles multi-line sequences)
+        return seqs
+
+def cal_score(matrix, seq1, seq2, i, j, match, mismatch, gap, best_score):
+if i == 0 or j == 0:
+            return 0, best_score  (first row/column are boundary cells)
+        diag_score = matrix[i-1][j-1] + (match if seq1[i-1] == seq2[j-1] else mismatch)
+        up_score   = matrix[i-1][j] + gap
+        left_score = matrix[i][j-1] + gap
+        score = max(0, diag_score, up_score, left_score)  (0 = start new local alignment)
+        best_score = max(best_score, score)
+        return score, best_score
+
+def smith_waterman(
+    sequence1: str,
+    sequence2: str,
+    match_score: float = 2.0,
+    mismatch_penalty: float = -1.0,
+    gap_penalty: float = -1.0
+) -> float:
+  initialize (len1+1) x (len2+1) score matrix of 0s, best_score = 0
+    for each cell (i, j):
+        score_matrix[i][j], best_score = cal_score(...)
+    self1 = match_score * len(sequence1)  (score of seq1 aligned to itself)
+    self2 = match_score * len(sequence2)
+    similarity = best_score / sqrt(self1 * self2)  (geometric mean normalizes to 0-1)
+    return similarity  (1.0 = identical; distance conversion done in build_distance_matrix)
+
+def build_distance_matrix(sequences: Dict[str, str]) -> Tuple[np.ndarray, List[str]]:
+seq_ids = list of sequence IDs  (fixes row/column order)
+        n = number of sequences
+        initialize n x n matrix of 0s  (diagonal stays 0)
+        for each pair i < j:
+            similarity = smith_waterman(seq_i, seq_j)
+            distance = 1 - similarity
+            matrix[i, j] = matrix[j, i] = distance  (symmetric)
+        return matrix, seq_ids
+
+def neighbor_joining(
+    distance_matrix: np.ndarray,
+    labels: List[str]
+) -> str:
+copy distance matrix, nodes = copy of labels, n = number of nodes
+        if n == 0: return ";"    if n == 1: return "label;"
+        while n > 2:
+            1. row_totals TD(i) = sum of row i
+            2. Q(i,j) = (n-2) * D(i,j) - TD(i) - TD(j)
+               set diagonal of Q to infinity  (a node can't join itself)
+            3. (i, j) = position of minimum Q  (i < j since Q is symmetric)
+            4. branch lengths:
+               di = D(i,j)/2 + (TD(i) - TD(j)) / (2(n-2))
+               dj = D(i,j) - di
+               clamp negative branch lengths to 0
+            5. new node label = "(node_i:di,node_j:dj)"  (Newick string builds itself)
+            6. distances to new node: D(u,k) = (D(i,k) + D(j,k) - D(i,j)) / 2
+            7. overwrite row/column i with new distances, set D(u,u) = 0
+               delete row and column j
+               nodes[i] = new label, delete nodes[j]
+            8. n = n - 1
+        when 2 nodes remain:
+            split final distance d in half between them
+            return "(node_0:d/2,node_1:d/2);"
+
 ```
 
 ## Biological Considerations and Context
@@ -137,11 +207,12 @@ Completing the HTML provided to be an extraordinary resource as it provided a wa
 
 We were able to meet a couple times throughout this process, and for our initial meeting we had spent the majority of the time processing the material. The second meeting we had code about halfway finished, but the discussion persisted about confusion we had about the concept and formulas. Peer collaboration was a useful asset here. I would also like to thank my group for also being accommodating of the West Coast schedule because there were a few times where we would meet and talk late at night! 
 
-## Other member
-Other members' reflections on the project
-
-Dianah:
+## Dianah
 This project was a bit challenging, and it took us a while to figure out. After our first virtual meeting, we each went back to review the slides, notebook and walkthrough, but even at our second meeting we were still struggling to see how the pieces fit together.It taught me that understanding an algorithm and implementing it are two different skills. The team discussions helped a lot. I was able to follow neighbor joining on paper well but writing it correctly was confusing. Python also accepted some small bugs without complaint which quietly produced wrong answers. The notebook, the walkthrough and the data file each had small inconsistencies, and checking them against each other made me more confident in my own results.
+
+## Yulia
+This project was definitely a challenge as there were many working parts. First we had to get a good grasp of how neighbor joining works. Our group met on Teams call and spent the first meeting just trying to understand the project, which took so long that we only started working on it actually in our second meeting. In that first meeting, we went through the NJ html activity together to understand the formulas and repetition while n>2, and the termination steps at n=2 with the distance matrices. In the second meeting, we discussed code ideas for implementing Smith-Waterman to build the initial distance matrix, and preliminary code for the NJ function. Using TODO blocks (Kailey's suggestion) was very helpful as there were definite gaps in our code that we knew we had to fill, but we did not know how to phrase it yet. Overall, I feel I have a good understanding of the concepts of Neighbor Joining now, although I still remain confused on if our method of calculating distances from similarities was the most optimal. 
+
 
 # References 
 
@@ -157,5 +228,20 @@ Input: How is the Smith-Waterman algorithm connect to the NJ algorithm? How to a
 
 Justification: I used Claude to provide assistant in detailing how the concepts are integrated together. It provided me resources to look at how to compute the Distance Matrix and develop pseudocode for it. 
 
+--- 
 Dianah
 I used Claude to learn the use of np.delete, np.vstack and np.column_stack to remove the joined rows and columns and add the new node’s row and column. I also used it to understand the concepts of the project.
+
+-------------------
+Usage: Yulia
+
+Input: What are good methods for converting Smith-waterman similarity score to distances?
+
+Justification: Although we had good understanding of Smith-Waterman for similarities and Neighbor Joining, we were confused on how to make the distance matrix. Using the Claude output, we decided to use 1 − normalized Smith-Waterman similarity = distance.
+
+-------------------
+Usage: Yulia
+
+Input: Update the pseudocode to match the updated code
+
+Justification: After working through the code together, it deviated from our original pseudocode so this helped make sure the pseudocode was up to date.
