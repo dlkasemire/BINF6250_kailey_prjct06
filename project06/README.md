@@ -18,16 +18,16 @@ Within this project, the Neighbor Joining algorithm is followed by the local ali
 
 1. Convert the alignment score matrix into a distance-based matrix
 2. Calculate the net divergence for each taxa (across the rows)
-   ```r(i) = total distance of taxa i from all other taxa```
+   r(i) = total distance of taxa i from all other taxa
 3. Calculate the new distance matrix (Q)
-   ```Q(i,j) = d(i,j) - (r(i) + r(j))/(n-2)```
+   Q(i,j) = d(i,j) - (r(i) + r(j))/(n-2)
 4. Use the new matrix (Q) to find the closest pair of taxa, i, j. Use the lowest distance and assign as the connecting node (u) for this pair.
 5. Calculate branch length
-  ```S(i,u) = d(i,j)/2 + (r(i)-r(j))/2(n-2)
+   S(i,u) = d(i,j)/2 + (r(i)-r(j))/2(n-2)
 
-     S(j,u) = d(i,j) - S(i,u)```
+   S(j,u) = d(i,j) - S(i,u)
 6. Calculate the new distances from (u) to the remaining taxa. The distance d(u,k) is
-  ``` d(u,k) = [d(i,k) + d(j,k) - d(i,j)]/2 ```
+   d(u,k) = [d(i,k) + d(j,k) - d(i,j)]/2
 7. Make steps 2-6 recursive until n > 2
 8. 
 
