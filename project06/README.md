@@ -4,7 +4,7 @@
 
 ## Neighbor Joining: Building Unrooted Phylogenetic Trees
 
-Neighbor Joining is a greedy heuristic clustering algorithm used to construct unrooted phylogenetic trees from a distance matrix crafted by the results of an alignment score matrix. This is used to compute genetic differences between species or variations and provide analysis of where they might have diverged at the molecular level. Unlike the UPGMA (Unweighted Pair Group Method with Arithmetic Mean), neighbor-joining 
+Neighbor Joining is a greedy agglomerative clustering algorithm used to construct unrooted phylogenetic trees from a distance matrix crafted by the results of an alignment score matrix. This is used to compute genetic differences between species or variations and provide analysis of where they might have diverged at the molecular level. Unlike the UPGMA (Unweighted Pair Group Method with Arithmetic Mean), neighbor-joining 
 
 1. Produces an unrooted tree
 2. Removes the assumption that evolution occurs at a constant rate
@@ -40,16 +40,23 @@ Some pseudocode here
 
 ## Biological Considerations and Context
 
+To expand upon neighbor joining, there are a few variants that have since been created since the original algorithm. 
+1. Live neighbor-joining
+2. Extended neighbor-joining
+3. Multifurcating neighbor-joining 
+
 ### Strengths
 
 - Computationally fast
+- Low Computational Cost O(N^3)
 
 ### Limitations
 
-A few limitations to this project are
+A few limitations to neighbor joining is 
 
 - Assigns negative length to some branches often.
--
+- Can often be hard to reproduce, depending on the parameters and code used
+- clustering algorithms are difficult 
 
 ### Tools to Compare
 
@@ -68,25 +75,31 @@ This one is interesting because it uses R rather than Python to emulate the neig
 
 
 # Struggles
-* Reconciling two sources was confusing for us at first. The notebook and the walkthrough use different letters for the same things (Q vs. D*, rᵢ vs. TD, k vs. u) and stop at different points. Switching between them caused confusion until we picked one and mapped the other onto it.
-* It was also a bit of a hustle turning the formulas into code. We split the branch-length formula across two lines and accidentally counted the distance twice. We also left out a / 2. Neither caused an error message. They just gave wrong numbers. These were corrected.
 
-*Github Repository*- 
+*Content Overload*- Reconciling two sources was confusing for us at first. The notebook and the walkthrough use different letters for the same things (Q vs. D*, rᵢ vs. TD, k vs. u) and stop at different points. Switching between them caused confusion until we picked one and mapped the other onto it.
+
+*Series of Formulas*- It was also a bit of a hustle turning the formulas into code. We split the branch-length formula across two lines and accidentally counted the distance twice. We also left out a / 2. Neither caused an error message. They just gave wrong numbers. These were corrected.
 
 *Biology Comprehension*-
 
-*Connection of Functions*- 
+*Building the Distance Matrix from Alignment Scores*- 
 
 # Personal Reflections
 ## Group Leader- Kailey 
 
-- mention NP-complete projects as this one and the previous one were so. 
+- mention NP-complete projects as this one and the previous one were so.
+- mention using R vs Python
 
 ## Other member
 Other members' reflections on the project
 
 Dianah:
 This project was a bit challenging, and it took us a while to figure out. After our first virtual meeting, we each went back to review the slides, notebook and walkthrough, but even at our second meeting we were still struggling to see how the pieces fit together.It taught me that understanding an algorithm and implementing it are two different skills. The team discussions helped a lot. I was able to follow neighbor joining on paper well but writing it correctly was confusing. Python also accepted some small bugs without complaint which quietly produced wrong answers. The notebook, the walkthrough and the data file each had small inconsistencies, and checking them against each other made me more confident in my own results.
+
+# References 
+
+Segura-Alabart, N., Serratosa, F., & Fernández, A. (2024). A practical study of the proportion of non-unique neighbor-joining trees of microsatellite markers. Computational and Structural Biotechnology Reports, 1, Article 100022. https://doi.org/10.1016/j.csbr.2024.100022
+
 
 # Generative AI Appendix
 Anthropic, Opus 5. 2026. Claude [Large language model]. https://claude.ai
