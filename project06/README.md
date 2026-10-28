@@ -60,10 +60,16 @@ https://www.hiv.lanl.gov/components/sequence/HIV/treemaker/treemaker.html
 This one is interesting because it uses R rather than Python to emulate the neighbor joining algorithm and purposefuly is marked as the HIV sequence database. 
 
 # Successes
-
+* Built the full pipeline, reading the FASTA file, normalized Smith–Waterman scoring, a symmetric 20 × 20 distance matrix, and neighbor joining that outputs a Newick tree.
+* Chose and justified a distance transformation. We normalized scores by the geometric mean of the self-scores and used distance = 1 − similarity. This gives 0 for identical sequences, is symmetric, and is never negative.
+* We successfully verified our code with known answers. The neighbor-joining code reproduced the correct trees for a 4-taxon example, the walkthrough’s example, and the additive coronavirus matrix.
+* We caught problems in the provided materials: the docstring expects 19 sequences but the file has 20, the headers needed parsing to get usable names, and two worked values in the walkthrough were miscalculated.
+* We learned new tools, NumPy’s delete, vstack and column_stack, building Newick strings, and debugging from tracebacks.
 
 
 # Struggles
+* Reconciling two sources was confusing for us at first. The notebook and the walkthrough use different letters for the same things (Q vs. D*, rᵢ vs. TD, k vs. u) and stop at different points. Switching between them caused confusion until we picked one and mapped the other onto it.
+* It was also a bit of a hustle turning the formulas into code. We split the branch-length formula across two lines and accidentally counted the distance twice. We also left out a / 2. Neither caused an error message. They just gave wrong numbers. These were corrected.
 
 *Github Repository*- 
 
@@ -79,6 +85,9 @@ This one is interesting because it uses R rather than Python to emulate the neig
 ## Other member
 Other members' reflections on the project
 
+Dianah:
+This project was a bit challenging, and it took us a while to figure out. After our first virtual meeting, we each went back to review the slides, notebook and walkthrough, but even at our second meeting we were still struggling to see how the pieces fit together.It taught me that understanding an algorithm and implementing it are two different skills. The team discussions helped a lot. I was able to follow neighbor joining on paper well but writing it correctly was confusing. Python also accepted some small bugs without complaint which quietly produced wrong answers. The notebook, the walkthrough and the data file each had small inconsistencies, and checking them against each other made me more confident in my own results.
+
 # Generative AI Appendix
 Anthropic, Opus 5. 2026. Claude [Large language model]. https://claude.ai
 
@@ -89,3 +98,6 @@ Input:
 Output: 
 
 Justification: 
+
+Dianah
+I used Claude to learn the use of np.delete, np.vstack and np.column_stack to remove the joined rows and columns and add the new node’s row and column. I also used it to understand the concepts of the project.
