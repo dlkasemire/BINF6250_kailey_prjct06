@@ -15,7 +15,7 @@ Each of these represents a unique characteristic of the neighbor-joining method.
 
 Within this project, the Neighbor-joining algorithm is followed by the local alignment algorithm, Smith-Waterman. The NJ algorithm steps root from the guide provided in the Jupyter Notebook as we constructed our function around this: 
 
-```
+
 **Initialization**:
 - Let $n$ be the number of sequences
 - Assign each sequence $i$ to its own leaf node
@@ -50,7 +50,7 @@ Pre-step: Calculate the total distance (TD) of each row in the matrix
 When $n = 2$ with remaining nodes $i$ and $j$:
 - Add final branch between $i$ and $j$ with length $d(i,j)$
 - Return unrooted tree $T$
-```
+
 
 # Pseudocode
 Put pseudocode in this box:
